@@ -25,6 +25,7 @@ namespace Program
         Console.ResetColor();
         Console.WriteLine("new\t| New book");
         Console.WriteLine("show\t| Show saved books");
+        Console.WriteLine("read\t| Change the current page of a book");
         Console.WriteLine("q\t| Quit");
 
         option = Console.ReadLine() ?? "ups";
@@ -56,6 +57,9 @@ namespace Program
         case "show":
           ShowDatabase();
           return;
+        case "read":
+          ReadBook();
+          return;
       }
     }
 
@@ -79,6 +83,10 @@ namespace Program
         Console.WriteLine("Pages?");
         string input = Console.ReadLine() ?? "0";
         uint.TryParse(input, out pages);
+
+        //Error message
+        if (pages == 0)
+          Console.WriteLine("Invalid number, please try again");
       } while (pages == 0);
 
       try
@@ -106,11 +114,50 @@ namespace Program
 
       foreach (KeyValuePair<int, Book> kvp in db)
       {
+        //ISSUE: Porcentaje is not properly showed
         Console.WriteLine($"{kvp.Key}\t|{kvp.Value.Title}\t|{kvp.Value.Description}\t\t|{kvp.Value.Pages}\t|{kvp.Value.CurrentPage}\t|{kvp.Value.Porcentaje}");
       }
 
       Console.ReadLine();
     }
 
+    private static void ReadBook()
+    {
+      Console.Clear();
+      //Check if is there at least one book
+      if (db.Count <= 0)
+      {
+        Console.WriteLine("There is no books registered yet...");
+        Console.ReadLine();
+        return;
+      }
+
+      Console.WriteLine("Book id?");
+      int id = 0;
+      bool validId = false;
+      do
+      {
+        int.TryParse(Console.ReadLine(), out id);
+        if (db.ContainsKey(id))
+          validId = true;
+        else
+          Console.WriteLine("Invalid ID, plase try again");
+      } while (!validId);
+
+      Console.WriteLine("Current page?");
+      uint currentPage = 0;
+      do
+      {
+        uint.TryParse(Console.ReadLine(), out currentPage);
+        //TODO: Better validation over here
+        if (currentPage == 0 || currentPage > db[id].Pages)
+          Console.WriteLine("Invalid current page, plase try again");
+      } while (currentPage == 0 || currentPage > db[id].Pages);
+
+      db[id].CurrentPage = currentPage;
+
+      Console.WriteLine("Current page succesfully updated, press enter to continue");
+      Console.ReadLine();
+    }
   }
 }
