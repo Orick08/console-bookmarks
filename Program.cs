@@ -101,12 +101,12 @@ namespace Program
       Console.Clear();
       Console.BackgroundColor = ConsoleColor.Black;
       Console.ForegroundColor = ConsoleColor.White;
-      Console.WriteLine("ID\t|Title\t|Description\t|Pages\t|C/P");
+      Console.WriteLine("ID\t|Title\t|Description\t|Pages\t|C/P\t|%");
       Console.ResetColor();
 
       foreach (KeyValuePair<int, Book> kvp in db)
       {
-        Console.WriteLine($"{kvp.Key}\t|{kvp.Value.Title}\t|{kvp.Value.Description}\t\t|{kvp.Value.Pages}\t|{kvp.Value.CurrentPage}");
+        Console.WriteLine($"{kvp.Key}\t|{kvp.Value.Title}\t|{kvp.Value.Description}\t\t|{kvp.Value.Pages}\t|{kvp.Value.CurrentPage}\t|{kvp.Value.Porcentaje}");
       }
 
       Console.ReadLine();

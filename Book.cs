@@ -6,6 +6,13 @@ namespace book_marks
     public string Description { get; set; }
     public uint Pages { get; set; }
     public uint CurrentPage { get; set; }
+    public uint Porcentaje
+    {
+      get
+      {
+        return CurrentPage / Pages * 100;
+      }
+    }
 
     public Book(string title, string description, uint pages)
     {
